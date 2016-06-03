@@ -1,0 +1,217 @@
+{include="header"}
+
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation"><a href="{$fsc->url()}"<><span class="glyphicon glyphicon-refresh" aria-hidden="true"></a></li>
+    <li role="presentation" {if condition="!$fsc->editar"} class="active" {/if}><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Listar Oportunidades</a></li>
+    <li role="presentation" ><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Crear Oportunidad</a></li>
+   {if condition="$fsc->editar"}
+    <li role="presentation"  class="active"><a href="#editar" aria-controls="editar" role="tab" data-toggle="tab">Editar Oportunidad</a></li>
+   {/if}
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+      <div role="tabpanel"  class=" tab-pane {if condition="!$fsc->editar"} active {/if}"  id="home"><!--listado-->
+
+              <div class="table-responsive"><!--Listado-->
+                  <table class="table table-hover">
+                     <thead>
+                         <tr>
+                      <th class="text-left" width="130">Fecha</th>
+                      <th class="text-right">Cliente</th>
+                      <th class="text-right">Empresa</th>
+                      <th class="text-right">Oportunidad</th>
+                      <th class="text-right">Face Venta</th>
+                      <th class="text-right">Valor</th>
+                         </tr>
+                     </thead>
+                      {loop="$fsc->listado"}
+                      <tr {if condition="$value->cliente==$fsc->user->nick"} class="bg-success" {else} class="bg-warning" {/if}>
+                          <td class="text-left">
+                              <a href="{$fsc->url()}&id={$value->id}">{$value->fecha}</a>
+                          {if condition="$value->completado"}
+                          <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                          {/if}
+                          </td>
+
+                          <td class="text-right">{$value->cliente}</td>
+                          <td class="text-right">{$value->empresa}</td>
+                          <td class="text-right">{$value->oportunidad}</td>
+                          <td class="text-right">{$value->venta}</td>
+                          <td class="text-right">{$value->valor}</td>
+                       </tr>
+                      {/loop}
+                      </table>
+
+              </div>
+
+      </div>
+      <div role="tabpanel" class="tab-pane" id="profile"><!--Nueva oportunidad-->
+          <form class="form" action="{$fsc->url()}" method="post" >
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-3">
+                  <div class="form-group">
+                      Fecha:
+                      <input type="text" name="fecha" value="{$fsc->today()}" class="form-control datepicker"/>                  </div>
+                  </div>
+                   <div class="col-md-3">
+                  <div class="form-group">
+                      Hora:
+                      <input type="text" name="hora" value="{$fsc->hour()}" class="form-control"/>
+                  </div>
+                  </div>
+                  <div class="col-md-3">
+                 <div class="form-group">
+                     Empresa:
+                     <select name="empresa" class="form-control" required>
+                         <option value="">Seleccionar Empresa</option>
+                         <option value="">---------</option>
+                         {loop="$fsc->base"}
+                         <option> {$value['nombreemp']}</option>
+                         {/loop}
+                     </select>
+                 </div>
+                 </div>
+                 <div class="col-md-3">
+                <div class="form-group">
+                    Cliente:
+                    <select name="cliente" class="form-control" required>
+                        <option value="">Seleccionar Cliente</option>
+                        <option value="">---------</option>
+                        {loop="$fsc->base"}
+                        <option> {$value['nombre']}</option>
+                        {/loop}
+                    </select>
+                </div>
+                </div>
+              </div>
+               <div class="row">
+                  <div class="col-md-4">
+                  <div class="form-group">
+                      Oportunidad:
+                      <input type="text" name="oportunidad" value="" class="form-control" required/>
+                  </div>
+                  </div>
+                  <div class="col-md-4">
+                    Face de Venta:
+                    <select name="venta" class="form-control" required>
+                      <option value="">Seleccionar Face Venta</option>
+                      <option value="">---------</option>
+                      <option value="Investigando">Investigando</option>
+                      <option value="Cerrada Ganada">Cerrada Ganada</option>
+                      <option value="Cerrada Perdida">Cerrada Perdida</option>
+                     </select>
+                  </div>
+                  <div class="col-md-4">
+                  <div class="form-group">
+                      Valor:
+                      <input type="number" name="valor" value="" class="form-control" required/>
+                  </div>
+                  </div>
+                      <div class="text-right">
+                          <button class="btn btn-sm btn-primary" type="sutmit">
+                          <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                              &nbsp Guardar
+                          </button>
+                      </div>
+
+               </div>
+          </form>
+       </div>
+   </div>
+   {if condition="$fsc->editar"}<!--editar oportunidad-->
+   <div role="tabpanel" class="tab-pane active" id="editar">
+   <form class="form" action="{$fsc->url()}" method="post" >
+             <div class="container">
+                 <h3>Editar Oportunidad</h3>
+                 <div class="row">
+                     <div class="col-md-3">
+                     <div class="form-group">
+                         <input type="hidden" name="modificar" value="{$fsc->editar->id}" />
+                         Fecha:
+                         <input type="text" name="fecha" value="{$fsc->editar->separa_fecha()}" class="form-control datepicker"/>                  </div>
+                     </div>
+                      <div class="col-md-3">
+                     <div class="form-group">
+                         Hora
+                         <input type="text" name="hora" value="{$fsc->editar->separa_hora()}" class="form-control"/>
+                     </div>
+                     </div>
+                    <div class="col-md-3">
+                     <div class="form-group">
+                         Cliente:
+                         <select name="cliente" class="form-control" required>
+                           <option value="{$fsc->editar->cliente}">{$fsc->editar->cliente}</option>
+                           <option value="">---------</option>
+                           {loop="$fsc->base"}
+                           <option {if condition="$value->nombre==$fsc->editar->cliente"} selected="selected"{/if}>{$value['nombre']}</option>
+                           {/loop}
+                          </select>
+                     </div>
+                     </div>
+                     <div class="col-md-3">
+                    <div class="form-group">
+                        Empresa:
+                        <select name="empresa" class="form-control" required>
+                          <option value="{$fsc->editar->empresa}">{$fsc->editar->empresa}</option>
+                          <option value="">---------</option>
+                          {loop="$fsc->base"}
+                          <option {if condition="$value->nombreemp==$fsc->editar->empresa"} selected="selected"{/if}>{$value['nombreemp']}</option>
+                          {/loop}
+                         </select>
+                     </div>
+                    </div>
+                 </div>
+                  <div class="row">
+                    <div class="col-md-4">
+                    <div class="form-group">
+                        Oportunidad:
+                       <input type="text" name="oportunidad" value="{$fsc->editar->oportunidad}" class="form-control" required/>
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        Face de Venta:
+                        <select name="venta" class="form-control" required>
+                          <option value="{$fsc->editar->venta}">{$fsc->editar->venta}</option>
+                          <option value="">---------</option>
+                          <option value="Investigando">Investigando</option>
+                          <option value="Cerrada Ganada">Cerrada Ganada</option>
+                          <option value="Cerrada Perdida">Cerrada Perdida</option>
+                        </select>
+
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        Valor:
+                          <input type="number" name="valor" value="{$fsc->editar->valor}" class="form-control" required/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="completado" value="TRUE" {if condition="$fsc->editar->completado"} checked="checked"{/if}></input>
+                            Oportunidad Terminada
+                        </label>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                        <a href="{$fsc->url()}&delete={$fsc->editar->id}" class="btn btn-sm btn-danger">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            &nbsp Eliminar
+                        </a>
+                        <button class="btn btn-sm btn-primary" type="sutmit">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                            &nbsp Actualizar
+                        </button>
+                    </div>
+             </div>
+       </div>
+     </form>
+   </div>
+   {/if}
+{include="footer"}

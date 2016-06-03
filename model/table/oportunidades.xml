@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : agenda.xml
+    Description:
+        Estructura de la tabla agenda.
+-->
+<tabla>
+<columna><nombre>id</nombre>
+<tipo>serial</tipo>
+<nulo>YES</nulo>
+</columna>
+<columna>
+    <nombre>fecha</nombre>
+    <tipo>datetime</tipo>
+    <nulo>NO</nulo>
+</columna>
+<columna>
+    <nombre>cliente</nombre>
+    <tipo>varchar(25)</tipo>
+    <nulo>YES</nulo>
+</columna>
+<columna>
+    <nombre>empresa</nombre>
+    <tipo>varchar(25)</tipo>
+    <nulo>YES</nulo>
+</columna>
+<columna>
+    <nombre>oportunidad</nombre>
+    <tipo>varchar(50)</tipo>
+    <nulo>YES</nulo>
+</columna>
+<columna>
+    <nombre>venta</nombre>
+    <tipo>varchar(20)</tipo>
+    <nulo>YES</nulo>
+</columna>
+<columna>
+    <nombre>valor</nombre>
+    <tipo>integer</tipo>
+    <nulo>YES</nulo>
+</columna>
+<columna>
+    <nombre>completado</nombre>
+    <tipo>boolean</tipo>
+    <nulo>NO</nulo>
+</columna>
+<restriccion>
+        <nombre>oportunidades_pkey</nombre>
+        <consulta>PRIMARY KEY (id)</consulta>
+</restriccion>
+
+</tabla>
